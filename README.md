@@ -14,10 +14,10 @@ Password: *************
 ```
 
 ###To-Do List
-* ~Address-type ip-prefix~
-* ~Address-type dns-name~
-* ~Address-type wildcard~
-* ~Address-type range~
+* ~~Address-type ip-prefix~~
+* ~~Address-type dns-name~~
+* ~~Address-type wildcard~~
+* ~~Address-type range~~
 * Address-set support
 * Support for source NAT address objects
 * Support for destination NAT address objects
