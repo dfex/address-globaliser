@@ -28,6 +28,7 @@ if inetRegex.match(str(sys.argv[1])):
         dev = Device(host=hostAddress.rstrip('\n'),user=username)
     dev.open()		
     config = dev.rpc.get_config(filter_xml=etree.XML('<configuration><security><zones/></security></configuration>'))
+    dev.close()
     addresses = config.xpath('//address-book/address')
     for address in addresses:
         address_name = address.find('name').text
@@ -61,7 +62,7 @@ if inetRegex.match(str(sys.argv[1])):
                 print "Address-type unknown"
     #print address_entries
     address_sets = config.xpath('address-book/address/address-set')
-	dev.close()
+    print "\n"
 else:	
 	print "Invalid IP Address"
 
