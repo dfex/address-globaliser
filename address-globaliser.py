@@ -36,26 +36,31 @@ if inetRegex.match(str(sys.argv[1])):
                 # This is an ip-prefix address
                 address_prefix = address.find('ip-prefix').text
                 address_entries.append({'name':address_name, 'ip-prefix':address_prefix})
-                print ("Address Name: {}, Address Prefix: {}".format(address_name, address_prefix))
+                #print ("Address Name: {}, Address Prefix: {}".format(address_name, address_prefix))
+                sys.stdout.write(".")
             elif (address.find('dns-name/name') != None):
                 # This is a dns-name address
                 dns_name = address.find('dns-name/name').text
                 address_entries.append({'name':address_name, 'dns-name':dns_name})            
-                print ("Address Name: {}, DNS Name: {}".format(address_name, dns_name))
+                sys.stdout.write(".")
+                #print ("Address Name: {}, DNS Name: {}".format(address_name, dns_name))
             elif (address.find('wildcard-address/name') != None):
                 # This is a wildcard address
                 wildcard_address = address.find('wildcard-address/name').text
                 address_entries.append({'name':address_name, 'wildcard-address':wildcard_address})            
-                print ("Address Name: {}, Wildcard Address: {}".format(address_name, wildcard_address))
+                sys.stdout.write(".")
+                #print ("Address Name: {}, Wildcard Address: {}".format(address_name, wildcard_address))
             elif (address.find('range-address/name') != None):
                 # This is a range address
                 range_address = address.find('range-address/name').text
                 high_address = address.find('range-address/to/range-high').text
                 address_entries.append({'name':address_name, 'range-address':range_address, 'range-high':high_address})            
-                print ("Address Name: {}, Range Address: {} to {}".format(address_name, range_address, high_address))
+                sys.stdout.write(".")
+                #print ("Address Name: {}, Range Address: {} to {}".format(address_name, range_address, high_address))                
             else:
                 print "Address-type unknown"
-    #address-sets = config.xpath('address-book/address/address-set')
+    #print address_entries
+    address_sets = config.xpath('address-book/address/address-set')
 	#dev.close()
 else:	
 	print "Invalid IP Address"
