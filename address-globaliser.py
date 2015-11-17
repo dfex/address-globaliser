@@ -61,7 +61,7 @@ if inetRegex.match(str(sys.argv[1])):
                 print "Address-type unknown"
     #print address_entries
     address_sets = config.xpath('address-book/address/address-set')
-	#dev.close()
+	dev.close()
 else:	
 	print "Invalid IP Address"
 
