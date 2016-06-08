@@ -21,6 +21,15 @@ password = getpass('Password (leave blank to use SSH Key): ')
 inetRegex = re.compile("^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-1][0-9]|22[0-3])\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") 
 
 patch_config=[]
+address_object_list=[]
+
+def register_address_object(address_object_name, address_object_list):
+    if address_object_name in address_object_list:
+        address_object_list.append(address_object_name + "_1")
+        return address_object_name + "_1"
+    else:
+        address_object_list.append(address_object_name)
+        return address_object_name
 
 if inetRegex.match(str(sys.argv[1])):
     if password != '':
@@ -35,7 +44,7 @@ if inetRegex.match(str(sys.argv[1])):
         addresses = zone.xpath('address-book/address')
         if addresses:
             for address in addresses:
-                address_name = address.find('name').text
+                address_name = register_address_object(address.find('name').text, address_object_list)
                 if address_name != None:
                     if (address.find('ip-prefix') != None):
                         # This is an ip-prefix address
@@ -62,7 +71,7 @@ if inetRegex.match(str(sys.argv[1])):
                     # no addresses found
             address_sets = zone.xpath('address-book/address-set')
             for address_set in address_sets:
-                address_set_name = address_set.find('name').text
+                address_set_name = register_address_object(address_set.find('name').text, address_object_list)
                 member_addresses = address_set.xpath('address')
                 for member_address in member_addresses:
                     member_address_name = member_address.find('name').text
