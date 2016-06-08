@@ -29,7 +29,8 @@ Password: *************
 * Support for source NAT address objects
 * Support for destination NAT address objects
 * Support for static NAT address objects
-* Confirm unique address object name
+* ~~Confirm unique address object name or rename~~
+* Rename address-set addresses when their child object is a duplicate
 * ~~Delete existing address objects and replace with globalised versions in Junos config~~
 * ~~Add --commit option to apply configuration directly to SRX~~
 * ~~generate a Junos config file for offline/scheduled changes~~
