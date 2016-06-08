@@ -6,7 +6,7 @@ The utility will:
 * Convert zone-based address-book entries to the global address-book and delete the zone-based address-book
 * Highlight any non-unique address-book objects (since they can overlap in zone-based address-books) and make them unique, while updating them in security policy and NAT objects
 * Rename source, destination and static NAT objects such that they aren't conflicting
-* Output a list of configuration changes to be applied in "set" format for change mamagement
+* Output a list of configuration changes to be applied in "set" format for change management
 * Optionally commit the changes directly to the SRX
 
 ###Usage
