@@ -5,12 +5,13 @@ import re
 from getpass import getpass
 from pprint import pprint
 from jnpr.junos import Device
+from jnpr.junos.utils.config import Config
 from lxml import etree
 
 print "SRX Address-Book Globalisation Tool\n\n"
-if len(sys.argv) != 2:
+if len(sys.argv) < 2:
     print "Error: Missing parameter\n"
-    print "Usage: address-globaliser.py <ip address>\n"
+    print "Usage: address-globaliser.py ip-address [-u username] [-p password] [--commit]\n"
     sys.exit()
 	
 hostAddress = sys.argv[1]
@@ -28,7 +29,6 @@ if inetRegex.match(str(sys.argv[1])):
         dev = Device(host=hostAddress.rstrip('\n'),user=username)
     dev.open()		
     config = dev.rpc.get_config(filter_xml=etree.XML('<configuration><security><zones/></security></configuration>'))
-    dev.close()
     zones = config.xpath('//security-zone')
     for zone in zones:
         zone_name = zone.find('name').text
@@ -76,10 +76,22 @@ if inetRegex.match(str(sys.argv[1])):
         else:
             # no addresses in this zone
             pass
-    # done 
+    if "--commit" in sys.argv:
+         # take the patch_config list and convert it into a single string preserving line-breaks
+        candidate_config = "\n".join(patch_config)
+        print ("Candidate configuration generated")
+        cu = Config(dev)
+        cu.load(candidate_config, format="set")
+        print ("Committing configuration")
+        cu.commit()
+        print ("Commit complete, closing device connection")
+    else: 
+        # output patch file to STDOUT
+        for config_line in patch_config:
+            print config_line
+    # and we're done - close device connection
+    dev.close()
 else:
     # ip-regex failed	
 	print "Invalid IP Address"
 	
-for config_line in patch_config:
-    print config_line
