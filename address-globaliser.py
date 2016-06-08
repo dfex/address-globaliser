@@ -19,7 +19,7 @@ password = getpass('Password (leave blank to use SSH Key): ')
 
 inetRegex = re.compile("^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-1][0-9]|22[0-3])\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") 
 
-address_entries=[]
+patch_config=[]
 
 if inetRegex.match(str(sys.argv[1])):
     if password != '':
@@ -40,22 +40,23 @@ if inetRegex.match(str(sys.argv[1])):
                     if (address.find('ip-prefix') != None):
                         # This is an ip-prefix address
                         address_prefix = address.find('ip-prefix').text
-                        print ("set security address-book global address {} {}".format(address_name, address_prefix))
+                        patch_config.append("set security address-book global address " + address_name + " " + address_prefix)
                     elif (address.find('dns-name/name') != None):
                         # This is a dns-name address
                         dns_name = address.find('dns-name/name').text
-                        print ("set security address-book global address {} dns-name {}".format(address_name, dns_name))
+                        patch_config.append("set security address-book global address " + address_name + " dns-name " + dns_name)
                     elif (address.find('wildcard-address/name') != None):
                         # This is a wildcard address
                         wildcard_address = address.find('wildcard-address/name').text        
-                        print ("set security address-book global address {} wildcard-address {}".format(address_name, wildcard_address))
+                        patch_config.append("set security address-book global address " + addresss_name + " wildcard-address " + wildcard_address)
                     elif (address.find('range-address/name') != None):
                         # This is a range address
                         range_address = address.find('range-address/name').text
                         high_address = address.find('range-address/to/range-high').text
-                        print ("set security address-book global address {} range-address {} to {}".format(address_name, range_address, high_address))
+                        print ("set security address-book global address " + address_name + " range-address " + range_address + " to " + high_address)
                     else:
-                        print "Address-type unknown"
+                        pass
+                        # address type unknown
                 else:
                     pass
                     # no addresses found
@@ -65,18 +66,20 @@ if inetRegex.match(str(sys.argv[1])):
                 member_addresses = address_set.xpath('address')
                 for member_address in member_addresses:
                     member_address_name = member_address.find('name').text
-                    print ("set security address-book global address-set {} address {}".format(address_set_name, member_address_name)) 
+                    patch_config.append ("set security address-book global address-set " + address_set_name + " address " + member_address_name) 
                 member_address_sets = address_set.xpath('address-set')
                 for member_address_set in member_address_sets:
                     member_address_set_name = member_address_set.find('name').text
-                    print ("set security address-book global address-set {} address-set {}".format(address_set_name, member_address_set_name))
+                    patch_config.append ("set security address-book global address-set " + address_set_name + " address-set " + member_address_set_name)
         # delete the zone-based address-book
-            print ("delete security zones security-zone {} address-book".format(zone_name))
+            patch_config.append ("delete security zones security-zone " + zone_name + " address-book")
         else:
             # no addresses in this zone
             pass
     # done 
-    print ("\n")
 else:
     # ip-regex failed	
 	print "Invalid IP Address"
+	
+for config_line in patch_config:
+    print config_line
