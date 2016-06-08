@@ -30,7 +30,6 @@ Password: *************
 * Support for destination NAT address objects
 * Support for static NAT address objects
 * Confirm unique address object name
-* Delete existing address objects and replace with globalised versions in Junos config
+* ~~Delete existing address objects and replace with globalised versions in Junos config~~
 * Add commit/dry-run option
-* Add option to commit directly to SRX
 * ~~generate a Junos config file for offline/scheduled changes~~
