@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 import sys
 import re
@@ -8,15 +8,15 @@ from jnpr.junos import Device
 from jnpr.junos.utils.config import Config
 from lxml import etree
 
-print "SRX Address-Book Globalisation Tool\n\n"
+print ("SRX Address-Book Globalisation Tool\n\n")
 if len(sys.argv) < 2:
-    print "Error: Missing parameter\n"
-    print "Usage: address-globaliser.py ip-address [-u username] [-p password] [--commit]\n"
+    print ("Error: Missing parameter\n")
+    print ("Usage: address-globaliser.py ip-address [-u username] [-p password] [--commit]\n")
     sys.exit()
 	
 hostAddress = sys.argv[1]
-username = raw_input('Username: ')
-password = getpass('Password (leave blank to use SSH Key): ')
+username = "nxtadmin"
+password = "!!Yamaha600!!"
 
 inetRegex = re.compile("^([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-1][0-9]|22[0-3])\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$") 
 
@@ -147,12 +147,12 @@ if inetRegex.match(str(sys.argv[1])):
     else: 
         # output patch file to STDOUT
         for config_line in patch_config:
-            print config_line
+            print (config_line)
     # and we're done - close device connection
     dev.close()
 else:
     # ip-regex failed	
-	print "Invalid IP Address"
+	print ("Invalid IP Address")
 	
 
 
